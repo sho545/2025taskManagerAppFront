@@ -1,0 +1,12 @@
+# ドキュメント関連
+README.md
+docs/
+
+# ジェネレータが生成するヘルパーファイル
+.openapi-generator-ignore
+git_push.sh
+
+# プロジェクト設定ファイル（上書きを防止）
+.gitignore
+package.json
+tsconfig.json

@@ -44,8 +44,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string # integerから変更
-            format: uuid
+            type: integer
+            format: int64
       responses:
         '200':
           description: A single task
@@ -62,8 +62,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string # integerから変更
-            format: uuid
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -86,8 +86,8 @@ paths:
           name: id
           required: true
           schema:
-            type: string # integerから変更
-            format: uuid
+            type: integer
+            format: int64
       responses:
         '204':
           description: Task deleted
@@ -100,9 +100,9 @@ components:
       type: object
       properties:
         id:
-          type: string
-          format: uuid
-          example: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+          type: integer
+          format: int64
+          example: 1
         title:
           type: string
           example: Buy groceries
