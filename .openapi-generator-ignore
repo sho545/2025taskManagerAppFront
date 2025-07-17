@@ -1,12 +1,9 @@
-# ドキュメント関連
-README.md
-docs/
+# 1. まず、すべてのファイルとフォルダを無視する
+**/*
 
-# ジェネレータが生成するヘルパーファイル
-.openapi-generator-ignore
-git_push.sh
-
-# プロジェクト設定ファイル（上書きを防止）
-.gitignore
-package.json
-tsconfig.json
+# 2. 次に、生成したいファイルだけを「!」で指定して無視対象から除外する
+!api.ts
+!base.ts
+!common.ts
+!configuration.ts
+!index.ts
