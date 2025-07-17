@@ -6,8 +6,8 @@ import type{ TaskDto } from '../../apis/api' ;
 
 // このコンポーネントが受け取るProps（プロパティ）の型を定義
 interface TaskItemProps extends TaskDto {
-  onToggleCompleted: (id: string) => void;
-  onDelete: (id: string) => void;
+  onToggleCompleted: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({

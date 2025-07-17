@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-api": "rimraf api-tmp ./src/apis/*.ts && openapi-generator-cli generate -i ./src/apis/openapi.yaml -g typescript-axios -o ./api-tmp && copyfiles -u 1 \"api-tmp/*.ts\" src/apis && rimraf api-tmp"
+    "generate-api": "rimraf --glob \"./src/apis/*.ts\" api-tmp && openapi-generator-cli generate -i ./src/apis/openapi.yaml -g typescript-axios -o ./api-tmp && copyfiles -u 1 \"api-tmp/*.ts\" src/apis && rimraf api-tmp"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
