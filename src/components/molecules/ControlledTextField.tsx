@@ -1,4 +1,5 @@
-import React from 'react';
+//フォームの情報と見た目の設定を受け取ってテキストフォームを返す
+
 import { TextField } from '@mui/material';
 import type { TextFieldProps } from '@mui/material';
 import { Controller } from 'react-hook-form';
@@ -13,7 +14,6 @@ interface ControlledTextFieldProps<T extends FieldValues> extends Omit<TextField
   control: Control<T>; // useFormから受け取るcontrolオブジェクト
 }
 
-//フォームの情報と見た目の設定を受け取ってテキストフォームを返す
 //=<T~>はジェネリックコンポーネントの宣言(ジェネリックな型を扱うにはコンポーネント自体にもジェネリック宣言が必要)
 //(!!undefined)=(!true)=false
 export const ControlledTextField = <T extends FieldValues>({

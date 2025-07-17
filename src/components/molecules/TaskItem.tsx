@@ -1,3 +1,5 @@
+//TaskDtoを受け取ってタスクを表示する
+
 import React from "react";
 import { Box, Checkbox, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
