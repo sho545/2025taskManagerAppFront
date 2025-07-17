@@ -31,10 +31,10 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 export interface TaskDto {
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof TaskDto
      */
-    'id'?: string;
+    'id'?: number;
     /**
      * 
      * @type {string}
@@ -131,11 +131,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Delete a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdDelete: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        tasksIdDelete: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('tasksIdDelete', 'id', id)
             const localVarPath = `/tasks/{id}`
@@ -165,11 +165,11 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Get a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        tasksIdGet: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('tasksIdGet', 'id', id)
             const localVarPath = `/tasks/{id}`
@@ -199,12 +199,12 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Update a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {TaskRequest} taskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdPut: async (id: string, taskRequest: TaskRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        tasksIdPut: async (id: number, taskRequest: TaskRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('tasksIdPut', 'id', id)
             // verify required parameter 'taskRequest' is not null or undefined
@@ -297,11 +297,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Delete a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async tasksIdDelete(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async tasksIdDelete(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.tasksIdDelete(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.tasksIdDelete']?.[localVarOperationServerIndex]?.url;
@@ -310,11 +310,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Get a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async tasksIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskDto>> {
+        async tasksIdGet(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.tasksIdGet(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.tasksIdGet']?.[localVarOperationServerIndex]?.url;
@@ -323,12 +323,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {TaskRequest} taskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async tasksIdPut(id: string, taskRequest: TaskRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskDto>> {
+        async tasksIdPut(id: number, taskRequest: TaskRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.tasksIdPut(id, taskRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.tasksIdPut']?.[localVarOperationServerIndex]?.url;
@@ -369,32 +369,32 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary Delete a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdDelete(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        tasksIdDelete(id: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.tasksIdDelete(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Get a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdGet(id: string, options?: RawAxiosRequestConfig): AxiosPromise<TaskDto> {
+        tasksIdGet(id: number, options?: RawAxiosRequestConfig): AxiosPromise<TaskDto> {
             return localVarFp.tasksIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Update a task by ID
-         * @param {string} id 
+         * @param {number} id 
          * @param {TaskRequest} taskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        tasksIdPut(id: string, taskRequest: TaskRequest, options?: RawAxiosRequestConfig): AxiosPromise<TaskDto> {
+        tasksIdPut(id: number, taskRequest: TaskRequest, options?: RawAxiosRequestConfig): AxiosPromise<TaskDto> {
             return localVarFp.tasksIdPut(id, taskRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -431,37 +431,37 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary Delete a task by ID
-     * @param {string} id 
+     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public tasksIdDelete(id: string, options?: RawAxiosRequestConfig) {
+    public tasksIdDelete(id: number, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).tasksIdDelete(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Get a task by ID
-     * @param {string} id 
+     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public tasksIdGet(id: string, options?: RawAxiosRequestConfig) {
+    public tasksIdGet(id: number, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).tasksIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Update a task by ID
-     * @param {string} id 
+     * @param {number} id 
      * @param {TaskRequest} taskRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public tasksIdPut(id: string, taskRequest: TaskRequest, options?: RawAxiosRequestConfig) {
+    public tasksIdPut(id: number, taskRequest: TaskRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).tasksIdPut(id, taskRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
