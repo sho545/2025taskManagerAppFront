@@ -23,7 +23,7 @@ export const TaskList: React.FC<TaskListProps> = ({
   // 表示するタスクがない場合の表示
   if (tasks.length === 0) {
     return (
-      <Box sx={{ p: 3, textAlign: 'center' }}> //paddingを全方向に8*3px設定
+      <Box sx={{ p: 3, textAlign: 'center' }}> {/*paddingを全方向に8*3px設定*/}
         <Typography color="text.secondary">
           表示するタスクはありません。
         </Typography>
