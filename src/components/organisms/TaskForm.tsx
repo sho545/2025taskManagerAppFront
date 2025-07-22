@@ -1,22 +1,11 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Box, Button } from '@mui/material';
 import { ControlledTextField } from '../molecules/ControlledTextField';
-
-// 1. Zodでフォームのバリデーションスキーマを定義
-//z.型().制約
-const taskFormSchema = z.object({
-  title: z.string().min(1, 'タイトルは必須です。'), //min(1,'1未満の時に表示される文字列')
-  description: z.string().optional(),             //.optional()任意入力
-  completed: z.boolean().optional(),
-  dueDate: z.string().min(1,'期日は必須です')
-});
-
-// 2. スキーマからTypeScriptの型を生成
-type TaskFormValues = z.infer<typeof taskFormSchema>;
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { taskFormSchema, type TaskFormValues } from '../../types/task';
 
 // 3. このコンポーネントが受け取るPropsの型を定義
 interface TaskFormProps {
@@ -29,14 +18,20 @@ interface TaskFormProps {
 export const TaskForm: React.FC<TaskFormProps> = ({
   onSubmit,
   initialValues,
-  submitButtonText = '送信',
-  isSubmitting = false,
+  submitButtonText = '送信', //親コンポが引数として渡さなかったときのためにdefault値を渡しておく
+  isSubmitting = false, 
 }) => {
-  // 4. useFormフックでフォームの状態とメソッドを取得
-  const { control, handleSubmit } = useForm<TaskFormValues>({
-    resolver: zodResolver(taskFormSchema),
-    defaultValues: initialValues || { title: '', description: '' },
-  });
+    const defaultValues: Partial<TaskFormValues> = {
+      title: initialValues?.title || '',
+      description: initialValues?.description || '',
+      completed: initialValues?.completed || false,
+      dueDate: initialValues?.dueDate || new Date(),
+    }
+    // 4. useFormフックでフォームの状態とメソッドを取得
+    const { control, handleSubmit } = useForm<TaskFormValues>({
+    resolver: zodResolver(taskFormSchema), //taskFormSchemaをzodResolverでRHFで解釈できるように変換
+    defaultValues
+    });
 
   return (
     // 5. handleSubmitでonSubmitをラップしてフォームに渡す
@@ -61,6 +56,26 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         rows={5}
       />
 
+      <Controller
+        name="dueDate"
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <DateTimePicker
+            label="期日"
+            value={field.value || null} // valueを接続
+            onChange={(newValue) => field.onChange(newValue)} // onChangeを接続
+            // エラー表示のための設定
+            slotProps={{
+              textField: {
+                required: true,
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
+          />
+        )}
+      />
+      
       <Button
         type="submit"
         variant="contained"

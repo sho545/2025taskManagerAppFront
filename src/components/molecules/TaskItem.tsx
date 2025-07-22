@@ -3,6 +3,7 @@
 import React from "react";
 import { Box, Checkbox, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { format } from 'date-fns';
 
 import type{ TaskDto } from '../../apis/api' ;
 
@@ -20,6 +21,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   onToggleCompleted,
   onDelete,
 }) => {
+  const formattedDueDate = dueDate ? format(new Date(dueDate), 'yyyy年MM月dd日 HH:mm') : '期日なし' ;
+
   return (
     <Box
       sx={{
@@ -47,7 +50,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           {title}
         </Typography>
         <Typography variant="caption" display="block" color="text.secondary">
-          {dueDate}
+          {formattedDueDate}
         </Typography>
       </Box>
 

@@ -3,24 +3,25 @@
 import { TextField } from '@mui/material';
 import type { TextFieldProps } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import type { Control, FieldValues, Path } from 'react-hook-form';
+import type { Control, Path } from 'react-hook-form';
+import type { TaskFormValues } from '../../types/task';
 
 // ジェネリクスを使い、より型安全なPropsを定義
 // Tはフォーム全体の型（例: { title: string; description: string; }）
 //interfaceは型を定義
 //<>の役割はこの型が引数として<>の中身の型を引数として受け取ることを表す
-interface ControlledTextFieldProps<T extends FieldValues> extends Omit<TextFieldProps, 'name' | 'value' | 'onChange'> {
-  name: Path<T>; // フォームのキー（'title'など）を型安全に
-  control: Control<T>; // useFormから受け取るcontrolオブジェクト
+interface ControlledTextFieldProps extends Omit<TextFieldProps, 'name' | 'value' | 'onChange'> {
+  name: Path<TaskFormValues>; // フォームのキー（'title'など）を型安全に
+  control: Control<TaskFormValues>; // useFormから受け取るcontrolオブジェクト
 }
 
 //=<T~>はジェネリックコンポーネントの宣言(ジェネリックな型を扱うにはコンポーネント自体にもジェネリック宣言が必要)
 //(!!undefined)=(!true)=false
-export const ControlledTextField = <T extends FieldValues>({
+export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
   name,
   control,
   ...rest // TextFieldが受け取る他のProps (label, multilineなど)
-}: ControlledTextFieldProps<T>) => {
+}) => {
   return (
     <Controller
       name={name}
