@@ -27,6 +27,11 @@ export const router = createBrowserRouter([
     element: <TaskEditPage />,
   },
   {
+    //新規登録用のパス
+    path: '/tasks/new', 
+    element: <TaskEditPage />, // 表示するコンポーネントは同じ
+  },
+  {
     // path: '*' は上記いずれにもマッチしない場合のページ（404 Not Found）
     path: '*',
     element: <div><h1>404 - ページが見つかりません</h1></div>,

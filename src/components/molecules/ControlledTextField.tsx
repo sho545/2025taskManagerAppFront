@@ -6,7 +6,6 @@ import { Controller } from 'react-hook-form';
 import type { Control, Path } from 'react-hook-form';
 import type { TaskFormValues } from '../../types/task';
 
-// ジェネリクスを使い、より型安全なPropsを定義
 // Tはフォーム全体の型（例: { title: string; description: string; }）
 //interfaceは型を定義
 //<>の役割はこの型が引数として<>の中身の型を引数として受け取ることを表す

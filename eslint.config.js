@@ -23,4 +23,4 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
-], storybook.configs["flat/recommended"]);
+], storybook.configs["flat/recommended"], storybook.configs["flat/recommended"]);

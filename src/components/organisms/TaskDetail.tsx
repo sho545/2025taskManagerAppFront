@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Button, Chip, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 import type { TaskDto } from '../../apis/api';
+import { format } from 'date-fns';
 
 // このコンポーネントが受け取るPropsの型を定義
 interface TaskDetailProps {
@@ -18,8 +19,10 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task, onDelete }) => {
       </Box>
     );
   }
+  const formattedDueDate = task.dueDate ? format(new Date(task.dueDate), 'yyyy年MM月dd日 HH:mm') : '期日なし' ;
 
   return (
+    
     <Box sx={{ p: 2 }}>
       {/* ステータスチップ */}
       <Chip
@@ -49,7 +52,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task, onDelete }) => {
           期日
         </Typography>
         <Typography variant="body1">
-          {task.dueDate}
+          {formattedDueDate}
         </Typography>
       </Box>
 
