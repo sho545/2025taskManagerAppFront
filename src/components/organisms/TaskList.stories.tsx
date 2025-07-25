@@ -17,11 +17,12 @@ const meta: Meta<typeof TaskList> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+type UiTask = Omit<TaskDto, 'id'> & { id: string };
 // --- モックデータ ---
-const baseTasks: TaskDto[] = [
-  { id: 1, title: 'UIコンポーネントを作成する', completed: true, dueDate: '2025-07-28T10:00:00Z' },
-  { id: 2, title: 'Storybookで表示確認', completed: false, dueDate: '2025-07-29T14:30:00Z' },
-  { id: 3, title: 'APIと連携する', completed: false, dueDate: '2025-07-30T18:00:00Z' },
+const baseTasks: UiTask[] = [
+  { id: '1', title: 'UIコンポーネントを作成する', completed: true, dueDate: '2025-07-28T10:00:00Z' },
+  { id: '2', title: 'Storybookで表示確認', completed: false, dueDate: '2025-07-29T14:30:00Z' },
+  { id: '3', title: 'APIと連携する', completed: false, dueDate: '2025-07-30T18:00:00Z' },
 ];
 
 // --- 各ストーリーの定義 ---

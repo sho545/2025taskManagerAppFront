@@ -17,7 +17,7 @@ type Story = StoryObj<typeof TaskItem>;
 // 「未完了」状態のストーリー
 export const Default: Story = {
   args: {
-    id: 1,
+    id: '1',
     title: 'Storybookを導入する',
     dueDate: '2025-07-18T10:00:00Z',
     completed: false,

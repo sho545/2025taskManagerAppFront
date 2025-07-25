@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 // --- 各ストーリーの定義 ---
 const baseTask = {
-  id: 1,
+  id: '1',
   title: 'タスクの詳細画面を作成する',
   description: 'MUIとAtomic Designを使って、詳細表示用のOrganismを実装する。',
   completed: false,

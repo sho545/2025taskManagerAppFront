@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom';
 import type { TaskDto } from '../../apis/api';
 import { format } from 'date-fns';
 
+type UiTask = Omit<TaskDto, 'id'> & { id: string };
 // このコンポーネントが受け取るPropsの型を定義
 interface TaskDetailProps {
-  task: TaskDto | null; // 表示するタスクのデータ、またはロード中の場合はnull
-  onDelete: (id: number) => void;
+  task: UiTask | null; // 表示するタスクのデータ、またはロード中の場合はnull
+  onDelete: (id: string) => void;
 }
 
 export const TaskDetail: React.FC<TaskDetailProps> = ({ task, onDelete }) => {

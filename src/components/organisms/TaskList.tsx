@@ -1,17 +1,15 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-// 以前作成したTaskItemコンポーネントをインポート
 import { TaskItem } from '../molecules/TaskItem';
-
-// APIクライアントからTaskの型定義をインポート
 import type { TaskDto } from '../../apis/api';
 
+type UiTask = Omit<TaskDto, 'id'> & { id: string };
 // このコンポーネントが受け取るPropsの型を定義
 interface TaskListProps {
-  tasks: TaskDto[]; // Taskの配列
-  onToggleCompleted: (id: number) => void;
-  onDelete: (id: number) => void;
+  tasks: UiTask[]; // Taskの配列
+  onToggleCompleted: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 //FC=Functional Component

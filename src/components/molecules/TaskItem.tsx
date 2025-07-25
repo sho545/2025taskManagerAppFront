@@ -8,9 +8,10 @@ import { format } from 'date-fns';
 import type{ TaskDto } from '../../apis/api' ;
 
 // このコンポーネントが受け取るProps（プロパティ）の型を定義
-interface TaskItemProps extends TaskDto {
-  onToggleCompleted: (id: number) => void;
-  onDelete: (id: number) => void;
+interface TaskItemProps extends Omit<TaskDto, 'id'> {
+  id: string; // タスクのID
+  onToggleCompleted: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({
