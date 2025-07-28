@@ -11,6 +11,7 @@ export const useTasks = () => {
   return useQuery({
     queryKey: ['tasks'], // このクエリの一意なキー。このキーで取得したデータをキャッシュ。useQuery({queryKey: ['tasks']})で利用
     queryFn: () => tasksApi.tasksGet(), // データをフェッチする関数
+    select: (response) => response.data,
   });
 };
 
