@@ -4,7 +4,7 @@ import { Box, CircularProgress, Alert } from '@mui/material';
 
 import { TaskDetail } from '../components/organisms/TaskDetail';
 import { ConfirmationDialog } from '../components/organisms/ConfirmationDialog';
-import { useTask, useDeleteTask } from '../hooks/useTasks';
+import { useTasks } from '../hooks/useTasks';
 
 // 親からPropsを受け取る定義を削除し、純粋なページコンポーネントにする
 export const TaskDetailPage: React.FC = () => {
@@ -12,8 +12,11 @@ export const TaskDetailPage: React.FC = () => {
 
   // このページが必要とするロジックをここで呼び出す
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { data: task, isLoading, isError } = useTask(taskId);
-  const deleteTaskMutation = useDeleteTask();
+  const { taskQuery, deleteTaskMutation } = useTasks(taskId);
+  const task = taskQuery.data;
+  const isLoading = taskQuery.isLoading; 
+  const isError = taskQuery.isError;
+  
 
   const uiTask = useMemo(() => {
     if (!task) return null;

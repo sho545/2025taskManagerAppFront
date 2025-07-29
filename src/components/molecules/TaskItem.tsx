@@ -1,17 +1,20 @@
 //TaskDtoを受け取ってタスクを表示する
 
 import React from "react";
-import { Box, Checkbox, Typography, IconButton } from '@mui/material';
+import { Box, Typography, IconButton, Checkbox } from '@mui/material';
+//import { SimpleCheckbox } from '../atoms/SimpleCheckbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 
 import type{ TaskDto } from '../../apis/api' ;
+// import { Link } from "react-router-dom";
 
 // このコンポーネントが受け取るProps（プロパティ）の型を定義
 interface TaskItemProps extends Omit<TaskDto, 'id'> {
   id: string; // タスクのID
   onToggleCompleted: (id: string) => void;
   onDelete: (id: string) => void;
+  onNavigate : () => void; // ページ遷移のための関数
 }
 
 export const TaskItem: React.FC<TaskItemProps> = ({
@@ -21,31 +24,45 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   completed,
   onToggleCompleted,
   onDelete,
+  onNavigate
 }) => {
   const formattedDueDate = dueDate ? format(new Date(dueDate), 'yyyy年MM月dd日 HH:mm') : '期日なし' ;
 
-  return (
+ return (
+    // ★ 1. 一番外側のBoxからはonClickを削除 ★
     <Box
       sx={{
-        display: 'flex',                      //要素を横一列に配置
-        alignItems: 'center',                 //縦の高さ
-        p: 1.5,                               //コンポーネント内側のpadding
-        borderBottom: '1px solid #e0e0e0',  //コンポーネントの下側に#e0e0e0の1px実線
+        display: 'flex',
+        alignItems: 'center',
+        p: 1.5,
+        borderBottom: '1px solid #e0e0e0',
+        '&:hover': { backgroundColor: 'action.hover' },
       }}
     >
-      {/* Checkbox (completed) */}
+      {/* チェックボックス部分 */}
       <Checkbox
         checked={completed}
-        onChange={() => {if(id){onToggleCompleted(id);}}}
+        onChange={() => onToggleCompleted(id)}
+        //onClick={(e) => e.stopPropagation()}
       />
       
-      {/* Title and DueDate */}
-      <Box sx={{ flexGrow: 1, ml: 2 }}> {/*flexGrow:1 ; flexのboxの中で、余ってるスペースを吸収/ml=margin-left,1=8px*/}
+      {/* ★ 2. テキスト部分をBoxで囲み、ここをクリック可能にする ★ */}
+      <Box 
+        onClick={onNavigate} // クリックでページ遷移するための関数を追加
+        sx={{ flexGrow: 1, ml: 2, cursor: 'pointer' }}
+      >
         <Typography
-          variant="h6" 
+          variant="h6"
+          // component={Link}
+          // to={`/tasks/${id}`}
           sx={{
-            textDecoration: completed ? 'line-through' : 'none',
-            color: completed ? 'text.disabled' : 'text.primary',
+            color: 'inherit',
+            textDecoration: 'none',
+            '&:hover': { textDecoration: 'underline' },
+            ...(completed && { // completedがtrueの場合のスタイル
+              textDecoration: 'line-through',
+              color: 'text.disabled',
+            }),
           }}
         >
           {title}
@@ -55,8 +72,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         </Typography>
       </Box>
 
-      {/* IconButton (delete) */}
-      <IconButton onClick={() => {if(id){onDelete(id)}}}>
+      {/* 削除ボタン部分 */}
+      <IconButton onClick={(e) => {
+        e.stopPropagation(); // クリックイベントの伝播を止める
+        onDelete(id)}}>
         <DeleteIcon />
       </IconButton>
     </Box>

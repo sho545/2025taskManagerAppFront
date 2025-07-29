@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress } from '@mui/material';
 
 import { TaskForm } from '../components/organisms/TaskForm';
-import { useTask, useCreateTask, useUpdateTask } from '../hooks/useTasks';
+import { useTasks } from '../hooks/useTasks';
 import type { TaskFormValues } from '../types/task';
 
 export const TaskEditPage: React.FC = () => {
@@ -13,7 +13,9 @@ export const TaskEditPage: React.FC = () => {
   // --- データフェッチと更新ロジック ---
 
   // 編集モードの場合のみ、既存のタスクデータを取得
-  const { data: existingTask, isLoading } = useTask(taskId);
+  const { taskQuery, updateTaskMutation, createTaskMutation } = useTasks(taskId);
+  const existingTask = taskQuery.data;
+  const isLoading = taskQuery.isLoading;
 
   // フォームの初期値を作成 (編集モードの場合のみ)
   const initialValues = isEditMode && existingTask
@@ -24,9 +26,6 @@ export const TaskEditPage: React.FC = () => {
         dueDate: new Date(existingTask.dueDate!),
       }
     : undefined;
-
-  const createTaskMutation = useCreateTask();
-  const updateTaskMutation = useUpdateTask();
 
   // フォーム送信時の処理
   const handleSubmit = (data: TaskFormValues) => {

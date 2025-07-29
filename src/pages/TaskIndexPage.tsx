@@ -2,17 +2,19 @@ import React, { useMemo, useState } from 'react';
 import { Box, CircularProgress, Alert, Typography } from '@mui/material';
 
 // 必要なカスタムフックをインポート
-import { useTasks, useUpdateTask, useDeleteTask } from '../hooks/useTasks';
+import { useTasks } from '../hooks/useTasks';
 
 import { TaskList } from '../components/organisms/TaskList';
 import type { TaskFormValues } from '../types/task';
 import { ConfirmationDialog } from '../components/organisms/ConfirmationDialog';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskIndexPage: React.FC = () => {
   // --- データフェッチと更新ロジック ---
-  const { data: tasksDto, isLoading, isError } = useTasks();
-  const updateTaskMutation = useUpdateTask();
-  const deleteTaskMutation = useDeleteTask();
+  const { tasksQuery, updateTaskMutation, deleteTaskMutation } = useTasks();
+  const tasksDto = tasksQuery.data;
+  const isLoading = tasksQuery.isLoading;
+  const isError = tasksQuery.isError;
 
   // APIデータ(TaskDto)をUI用の型(UiTask)に変換
   const uiTasks = useMemo(() => {
@@ -30,7 +32,8 @@ export const TaskIndexPage: React.FC = () => {
         // dueDateを文字列からDateオブジェクトに変換
         const taskAsFormValues: TaskFormValues = {
         title: targetTask.title || '',
-        ...targetTask,
+        description: targetTask.description,
+        completed: targetTask.completed,
         dueDate: new Date(targetTask.dueDate!),
         };
         updateTaskMutation.mutate({
@@ -58,6 +61,12 @@ export const TaskIndexPage: React.FC = () => {
     setIsDialogOpen(false);
   };
 
+  const navigate = useNavigate();
+  // 4. TaskItemに渡すためのページ遷移関数
+  const handleNavigate = (id: string) => {
+    navigate(`/tasks/${id}`);
+  };
+
   // --- UIの描画 ---
   if (isLoading) {
     return <CircularProgress />;
@@ -76,6 +85,7 @@ export const TaskIndexPage: React.FC = () => {
         tasks={uiTasks}
         onToggleCompleted={handleToggleCompleted}
         onDelete={handleDelete}
+        onNavigate={handleNavigate} // ページ遷移のための関数を渡す
       />
       <ConfirmationDialog
         open={isDialogOpen}

@@ -10,6 +10,7 @@ interface TaskListProps {
   tasks: UiTask[]; // Taskの配列
   onToggleCompleted: (id: string) => void;
   onDelete: (id: string) => void;
+  onNavigate: (id: string) => void; // ページ遷移のための関数
 }
 
 //FC=Functional Component
@@ -17,6 +18,7 @@ export const TaskList: React.FC<TaskListProps> = ({
   tasks,
   onToggleCompleted,
   onDelete,
+  onNavigate
 }) => {
   // 表示するタスクがない場合の表示
   if (tasks.length === 0) {
@@ -38,6 +40,7 @@ export const TaskList: React.FC<TaskListProps> = ({
           {...task}     // taskオブジェクトの全プロパティ（id, titleなど）を渡す
           onToggleCompleted={onToggleCompleted}
           onDelete={onDelete}
+          onNavigate={() => onNavigate(task.id)} // ページ遷移のための関数を渡す
         />
       ))}
     </Box>
