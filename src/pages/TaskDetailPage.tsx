@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, CircularProgress, Alert } from '@mui/material';
 
 import { TaskDetail } from '../components/organisms/TaskDetail';
@@ -12,7 +12,8 @@ export const TaskDetailPage: React.FC = () => {
 
   // このページが必要とするロジックをここで呼び出す
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { taskQuery, deleteTaskMutation } = useTasks(taskId);
+  const navigate = useNavigate();
+  const { taskQuery, deleteTaskMutation } = useTasks({taskId});
   const task = taskQuery.data;
   const isLoading = taskQuery.isLoading; 
   const isError = taskQuery.isError;
@@ -30,7 +31,7 @@ export const TaskDetailPage: React.FC = () => {
   const handleConfirmDelete = () => {
     // 削除の際には必ずtaskIdが存在することを確認
     if (taskId) {
-      deleteTaskMutation.mutate(taskId);
+      deleteTaskMutation.mutate(taskId!,{onSuccess: () => {navigate('/')}});
     }
     setIsDialogOpen(false);
   };

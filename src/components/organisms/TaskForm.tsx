@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button } from '@mui/material';
+import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { ControlledTextField } from '../molecules/ControlledTextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { taskFormSchema, type TaskFormValues } from '../../types/task';
@@ -21,6 +21,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   submitButtonText = '送信', //親コンポが引数として渡さなかったときのためにdefault値を渡しておく
   isSubmitting = false, 
 }) => {
+    const isEditMode = !!initialValues;
     const defaultValues: Partial<TaskFormValues> = {
       title: initialValues?.title || '',
       description: initialValues?.description || '',
@@ -75,6 +76,21 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           />
         )}
       />
+      
+      {isEditMode && (
+        <Controller
+          name="completed"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={<Switch {...field} checked={field.value || false} />}
+              label="完了にする"
+            />
+          )}
+        />
+      )}
+
+      {/* 送信ボタン */}
       
       <Button
         type="submit"

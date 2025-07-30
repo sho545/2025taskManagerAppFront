@@ -37,7 +37,7 @@ export const TaskIndexPage: React.FC = () => {
         dueDate: new Date(targetTask.dueDate!),
         };
         updateTaskMutation.mutate({
-            id: String(targetTask.id),
+            taskId: String(targetTask.id),
             task: { ...taskAsFormValues, completed: !targetTask.completed },
         });
     }

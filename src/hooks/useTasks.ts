@@ -1,16 +1,25 @@
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
+//import { useNavigate } from 'react-router-dom';
 
 import { tasksApi } from '../apis/client';
 import type { TaskFormValues } from '../types/task';
+import type { TaskDto } from '../apis';
 
+
+type UpdateVariables = { taskId: string; task: TaskFormValues };
+// useTasksフックが受け取るオプションの型を定義
+interface UseTasksOptions {
+  taskId?: string;
+  createTaskOptions?: UseMutationOptions<TaskDto, Error, TaskFormValues>;
+  updateTaskOptions?: UseMutationOptions<TaskDto, Error, { taskId: string; task: TaskFormValues }>;
+}
 /**
  * タスク関連のすべてのデータ操作を管理するカスタムフック
  */
-export const useTasks = (id?: string) => {
+export const useTasks = (options: UseTasksOptions = {}) => {
+  const { taskId, createTaskOptions, updateTaskOptions } = options;
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   // --- クエリ (データ取得) ---
 
@@ -21,38 +30,50 @@ export const useTasks = (id?: string) => {
   });
 
   const taskQuery = useQuery({
-    queryKey: ['tasks', id],
+    queryKey: ['tasks', taskId],
     queryFn: () => {
-      const parsedId = parseInt(id!, 10);
+      const parsedId = parseInt(taskId!, 10);
       return tasksApi.tasksIdGet(parsedId);
     },
-    enabled: !!id,
+    enabled: !!taskId,
     select: (response) => response.data,
   });
 
   // --- ミューテーション (データ変更) ---
-
-  const createTaskMutation = useMutation({
-    mutationFn: (newTask: TaskFormValues) => {
+  const { onSuccess: onExternalSuccess, ...restCreateTaskOptions } = createTaskOptions || {};
+  const createTaskMutation = useMutation<TaskDto, Error, TaskFormValues>({
+    mutationFn: async (newTask: TaskFormValues) => {
       const payload = { ...newTask, dueDate: newTask.dueDate.toISOString() };
-      return tasksApi.tasksPost(payload);
+      const response = await tasksApi.tasksPost(payload);
+      return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      navigate('/');
+      //navigate('/');
+      if (onExternalSuccess) {
+        onExternalSuccess(data, variables, context);
+      }
     },
+    ...restCreateTaskOptions,
   });
 
-  const updateTaskMutation = useMutation({
-    mutationFn: ({ id, task }: { id: string, task: TaskFormValues }) => {
+  const { onSuccess: onExternalSuccess1, ...restUpdateTaskOptions } = updateTaskOptions || {};
+  const updateTaskMutation = useMutation<TaskDto, Error, UpdateVariables>({
+    mutationFn: async ({ taskId, task }) => {
       const payload = { ...task, dueDate: task.dueDate.toISOString() };
-      return tasksApi.tasksIdPut(parseInt(id, 10), payload);
+      const response = await tasksApi.tasksIdPut(parseInt(taskId, 10), payload);
+      return response.data;
     },
-    onSuccess: (_, { id }) => {
+    onSuccess: (data, variables, context) => {
+      const taskId = variables.taskId; ;
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      queryClient.invalidateQueries({ queryKey: ['tasks', id] });
-      navigate(`/tasks/${id}`);
+      queryClient.invalidateQueries({ queryKey: ['tasks', taskId] });
+      //navigate(`/tasks/${id}`);
+      if (onExternalSuccess1) {
+        onExternalSuccess1(data, variables, context);
+      }
     },
+    ...restUpdateTaskOptions,
   });
 
   const deleteTaskMutation = useMutation({
@@ -62,7 +83,7 @@ export const useTasks = (id?: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
-      navigate('/');
+      //navigate('/');
     },
   });
 
