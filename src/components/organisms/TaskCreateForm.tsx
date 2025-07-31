@@ -2,35 +2,30 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box, Button, FormControlLabel, Switch } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { ControlledTextField } from '../molecules/ControlledTextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { taskFormSchema, type TaskFormValues } from '../../types/task';
+import { createTaskSchema, type TaskFormValues } from '../../types/task';
 
 // 3. このコンポーネントが受け取るPropsの型を定義
 interface TaskFormProps {
   onSubmit: SubmitHandler<TaskFormValues>; // フォーム送信時の処理
-  initialValues?: Partial<TaskFormValues>; // フォームの初期値（編集時に使用）
-  submitButtonText?: string; // 送信ボタンのテキスト
   isSubmitting?: boolean; // 送信処理中かどうか
 }
 
-export const TaskForm: React.FC<TaskFormProps> = ({
+export const TaskCreateForm: React.FC<TaskFormProps> = ({
   onSubmit,
-  initialValues,
-  submitButtonText = '送信', //親コンポが引数として渡さなかったときのためにdefault値を渡しておく
   isSubmitting = false, 
 }) => {
-    const isEditMode = !!initialValues;
     const defaultValues: Partial<TaskFormValues> = {
-      title: initialValues?.title || '',
-      description: initialValues?.description || '',
-      completed: initialValues?.completed || false,
-      dueDate: initialValues?.dueDate || new Date(),
+      title: '',
+      description:'',
+      completed: false,
+      dueDate: new Date(),
     }
     // 4. useFormフックでフォームの状態とメソッドを取得
     const { control, handleSubmit } = useForm<TaskFormValues>({
-    resolver: zodResolver(taskFormSchema), //taskFormSchemaをzodResolverでRHFで解釈できるように変換
+    resolver: zodResolver(createTaskSchema),
     defaultValues
     });
 
@@ -76,19 +71,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           />
         )}
       />
-      
-      {isEditMode && (
-        <Controller
-          name="completed"
-          control={control}
-          render={({ field }) => (
-            <FormControlLabel
-              control={<Switch {...field} checked={field.value || false} />}
-              label="完了にする"
-            />
-          )}
-        />
-      )}
 
       {/* 送信ボタン */}
       
@@ -98,7 +80,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         disabled={isSubmitting}
         sx={{ mt: 2, alignSelf: 'flex-start' }}
       >
-        {isSubmitting ? '送信中...' : submitButtonText}
+        {isSubmitting ? '送信中...' : '登録する'}
       </Button>
     </Box>
   );

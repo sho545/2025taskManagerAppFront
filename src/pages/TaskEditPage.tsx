@@ -2,9 +2,10 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography, CircularProgress } from '@mui/material';
 
-import { TaskForm } from '../components/organisms/TaskForm';
+import { TaskCreateForm } from '../components/organisms/TaskCreateForm';
+import { TaskEditForm } from '../components/organisms/TaskEditForm';
 import { useTasks } from '../hooks/useTasks';
-import type { TaskFormValues } from '../types/task';
+import { type TaskFormValues } from '../types/task';
 
 export const TaskEditPage: React.FC = () => {
   const { taskId } = useParams<{ taskId: string }>();
@@ -58,19 +59,27 @@ export const TaskEditPage: React.FC = () => {
   if (isEditMode && isLoading) {
     return <CircularProgress />;
   }
-  
+
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
         {isEditMode ? 'タスクの編集' : 'タスクの新規作成'}
       </Typography>
       
-      <TaskForm
-        onSubmit={handleSubmit}
-        initialValues={initialValues}
-        submitButtonText={isEditMode ? '更新する' : '登録する'}
-        isSubmitting={createTaskMutation.isPending || updateTaskMutation.isPending}
-      />
+       {isEditMode ? (
+        // 編集モードの場合
+        <TaskEditForm
+          onSubmit={handleSubmit}
+          initialValues={initialValues}
+          isSubmitting={updateTaskMutation.isPending}
+        />
+      ) : (
+        // 新規作成モードの場合
+        <TaskCreateForm
+          onSubmit={handleSubmit}
+          isSubmitting={createTaskMutation.isPending}
+        />
+      )}
     </Box>
   );
 };
