@@ -6,6 +6,7 @@ export const baseSchema = z.object({
   description: z.string().max(50, '説明は50文字以内で入力してください。')
     .regex(/^[^\x01-\x7E\xA1-\xDF]*$/, '説明に半角英数字は使用できません。').optional(),
   completed: z.boolean().optional(),
+  dueDate: z.date()
 });
 
 //2. 新規登録用のスキーマを作成

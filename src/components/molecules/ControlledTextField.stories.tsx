@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Box } from '@mui/material';
 
 import { ControlledTextField } from './ControlledTextField';
-import { taskFormSchema, type TaskFormValues } from '../../types/task';
+import {  baseSchema, type TaskFormValues } from '../../types/task';
 
 // // --- Storybook用のセットアップ ---
 
@@ -31,7 +31,7 @@ export const Default: Story = {
   // 各ストーリーが自身の描画ロジックを持つ
   render: (args) => {
     const { control, handleSubmit } = useForm<TaskFormValues>({
-      resolver: zodResolver(taskFormSchema),
+      resolver: zodResolver(baseSchema),
       defaultValues: {
         title: '',
         description: '',
@@ -54,7 +54,7 @@ export const Default: Story = {
 export const WithError: Story = {
   render: (args) => {
     const { control, handleSubmit } = useForm<TaskFormValues>({
-      resolver: zodResolver(taskFormSchema),
+      resolver: zodResolver(baseSchema),
     });
     return (
       <Box component="form" onSubmit={handleSubmit(() => {})} sx={{width: 300}}>
