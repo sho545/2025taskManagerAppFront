@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 //import { useNavigate } from 'react-router-dom';
 
-import { tasksApi } from '../apis/client';
+import { tasksApi } from '../libs/apiClient';
 import type { TaskFormValues } from '../types/task';
 import type { TaskDto } from '../apis';
 

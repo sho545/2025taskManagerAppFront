@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 // APIクライアントのモジュール全体をモック化
-vi.mock('../apis/client', () => ({
+vi.mock('../libs/apiClient', () => ({
   tasksApi: {
     tasksIdGet: vi.fn(),
     tasksIdPut: vi.fn(),
