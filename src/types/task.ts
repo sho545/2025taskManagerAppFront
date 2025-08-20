@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { TaskDto } from '../apis/api';
 
 // Zodスキーマを定義
 export const baseSchema = z.object({
@@ -27,3 +28,5 @@ export const createUpdateTaskSchema = (originalDueDate: Date) => {
 
 // スキーマからTypeScriptの型を生成
 export type TaskFormValues = z.infer<typeof createTaskSchema>;
+
+export type UiTask = Omit<TaskDto, 'id'> & { id: string };

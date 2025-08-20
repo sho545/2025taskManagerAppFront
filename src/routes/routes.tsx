@@ -5,6 +5,7 @@ import { TaskEditPage } from '../pages/TaskEditPage';
 import { MainLayout } from '../components/templates/MainLayout';
 
 // アプリのルーティング情報を定義
+//まずelementを描画して、urlに一致するchildrenを親の<Outlet />に描画
 export const router = createBrowserRouter([
   {
     // 親ルートが共通レイアウトを担当

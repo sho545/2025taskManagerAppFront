@@ -8,7 +8,7 @@ import type { TaskDto } from '../apis';
 
 
 type UpdateVariables = { taskId: string; task: TaskFormValues };
-// useTasksフックが受け取るオプションの型を定義
+// useTasksフックが受け取るオプションの型を定義(pagesから渡されるprops)
 interface UseTasksOptions {
   taskId?: string;
   createTaskOptions?: UseMutationOptions<TaskDto, Error, TaskFormValues>;
@@ -59,20 +59,26 @@ export const useTasks = (options: UseTasksOptions = {}) => {
 
   const { onSuccess: onExternalSuccess1, ...restUpdateTaskOptions } = updateTaskOptions || {};
   const updateTaskMutation = useMutation<TaskDto, Error, UpdateVariables>({
+    //asyncは非同期処理を表すキーワード(awaitが使えるようになる)
+    // {...}...のプロパティを持つojを引数として受け取る
     mutationFn: async ({ taskId, task }) => {
       const payload = { ...task, dueDate: task.dueDate.toISOString() };
+      //awitがないとtasksApi~(非同期処理)が終わる前に次の処理が行われる(非同期処理(:Promiseオブジェクトを返す)にはawait)
       const response = await tasksApi.tasksIdPut(parseInt(taskId, 10), payload);
       return response.data;
     },
     onSuccess: (data, variables, context) => {
       const taskId = variables.taskId; ;
+      //古いキャッシュを無効化
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       queryClient.invalidateQueries({ queryKey: ['tasks', taskId] });
       //navigate(`/tasks/${id}`);
+      //onSuccess処理を受け取ったらそれを実行
       if (onExternalSuccess1) {
         onExternalSuccess1(data, variables, context);
       }
     },
+    //onSuccess以外のpropsもobjとしてupdateTaskMutationに格納しておく
     ...restUpdateTaskOptions,
   });
 
