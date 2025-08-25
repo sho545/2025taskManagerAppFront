@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { TaskDto } from '../apis/api';
 
 // Zodスキーマを定義
 export const baseSchema = z.object({
@@ -6,6 +7,7 @@ export const baseSchema = z.object({
   description: z.string().max(50, '説明は50文字以内で入力してください。')
     .regex(/^[^\x01-\x7E\xA1-\xDF]*$/, '説明に半角英数字は使用できません。').optional(),
   completed: z.boolean().optional(),
+  dueDate: z.date()
 });
 
 //2. 新規登録用のスキーマを作成
@@ -26,3 +28,5 @@ export const createUpdateTaskSchema = (originalDueDate: Date) => {
 
 // スキーマからTypeScriptの型を生成
 export type TaskFormValues = z.infer<typeof createTaskSchema>;
+
+export type UiTask = Omit<TaskDto, 'id'> & { id: string };
