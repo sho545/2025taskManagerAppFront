@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, CircularProgress, Alert } from '@mui/material';
+import { CircularProgress, Alert } from '@mui/material';
 
-import { TaskDetail } from '../components/organisms/TaskDetail';
-import { ConfirmationDialog } from '../components/organisms/ConfirmationDialog';
 import { useTasks } from '../hooks/useTasks';
+import { TaskDetailPageTemplate } from '../components/templates/TaskDetailPageTemplate';
 
 // 親からPropsを受け取る定義を削除し、純粋なページコンポーネントにする
 export const TaskDetailPage: React.FC = () => {
@@ -40,15 +39,14 @@ export const TaskDetailPage: React.FC = () => {
   if (isError) { return <Alert severity="error">タスクの読み込みに失敗しました。</Alert>; }
 
   return (
-    <Box>
-      <TaskDetail task={uiTask} onDelete={handleDelete} />
-      <ConfirmationDialog
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="削除の確認"
-        message="本当にこのタスクを削除しますか？"
-      />
-    </Box>
+    <TaskDetailPageTemplate
+      task={uiTask}
+      isLoading={isLoading}
+      isError={isError}
+      isDialogOpen={isDialogOpen}
+      onDelete={handleDelete}
+      onCloseDialog={() => setIsDialogOpen(false)}
+      onConfirmDelete={handleConfirmDelete}
+    />
   );
 };

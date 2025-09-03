@@ -1,13 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { Box, CircularProgress, Alert, Typography } from '@mui/material';
+import { CircularProgress, Alert } from '@mui/material';
 
 // 必要なカスタムフックをインポート
 import { useTasks } from '../hooks/useTasks';
 
-import { TaskList } from '../components/organisms/TaskList';
 import type { TaskFormValues } from '../types/task';
-import { ConfirmationDialog } from '../components/organisms/ConfirmationDialog';
 import { useNavigate } from 'react-router-dom';
+import { TaskIndexPageTemplate } from '../components/templates/TaskIndexPageTemplate';
 
 export const TaskIndexPage: React.FC = () => {
   // --- データフェッチと更新ロジック ---
@@ -77,23 +76,14 @@ export const TaskIndexPage: React.FC = () => {
   }
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        タスク一覧
-      </Typography>
-      <TaskList
-        tasks={uiTasks}
-        onToggleCompleted={handleToggleCompleted}
-        onDelete={handleDelete}
-        onNavigate={handleNavigate} // ページ遷移のための関数を渡す
-      />
-      <ConfirmationDialog
-        open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
-        title="削除の確認"
-        message="本当にこのタスクを削除しますか？"
-      />
-    </Box>
+    <TaskIndexPageTemplate
+      tasks={uiTasks}
+      isDialogOpen={isDialogOpen}
+      onToggleCompleted={handleToggleCompleted}
+      onDelete={handleDelete}
+      onNavigate={handleNavigate}
+      onCloseDialog={() => setIsDialogOpen(false)}
+      onConfirmDelete={handleConfirmDelete}
+    />
   );
 };
