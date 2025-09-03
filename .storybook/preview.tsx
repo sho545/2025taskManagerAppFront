@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react-vite'
 import React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -19,7 +19,7 @@ const preview: Preview = {
 
   decorators: [
     (Story) => (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Story />

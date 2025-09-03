@@ -43,7 +43,7 @@ export const useTasks = (options: UseTasksOptions = {}) => {
   const { onSuccess: onExternalSuccess, ...restCreateTaskOptions } = createTaskOptions || {};
   const createTaskMutation = useMutation<TaskDto, Error, TaskFormValues>({
     mutationFn: async (newTask: TaskFormValues) => {
-      const payload = { ...newTask, dueDate: newTask.dueDate.toISOString() };
+      const payload = { ...newTask, dueDate: newTask.dueDate };
       const response = await tasksApi.tasksPost(payload);
       return response.data;
     },
@@ -62,7 +62,7 @@ export const useTasks = (options: UseTasksOptions = {}) => {
     //asyncは非同期処理を表すキーワード(awaitが使えるようになる)
     // {...}...のプロパティを持つojを引数として受け取る
     mutationFn: async ({ taskId, task }) => {
-      const payload = { ...task, dueDate: task.dueDate.toISOString() };
+      const payload = { ...task, dueDate: task.dueDate };
       //awitがないとtasksApi~(非同期処理)が終わる前に次の処理が行われる(非同期処理(:Promiseオブジェクトを返す)にはawait)
       const response = await tasksApi.tasksIdPut(parseInt(taskId, 10), payload);
       return response.data;

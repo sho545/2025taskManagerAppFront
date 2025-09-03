@@ -5,6 +5,7 @@ import {  CircularProgress } from '@mui/material';
 import { useTasks } from '../hooks/useTasks';
 import { type TaskFormValues } from '../types/task';
 import { TaskEditPageTemplate } from '../components/templates/TaskEditPageTemplate';
+import dayjs from 'dayjs';
 
 export const TaskEditPage: React.FC = () => {
   const { taskId } = useParams<{ taskId: string }>();
@@ -39,7 +40,7 @@ export const TaskEditPage: React.FC = () => {
         title: existingTask.title || '',
         description: existingTask.description,
         completed: existingTask.completed,
-        dueDate: new Date(existingTask.dueDate || new Date()),
+        dueDate: existingTask.dueDate || dayjs().toISOString(), 
       }
     : undefined;
 

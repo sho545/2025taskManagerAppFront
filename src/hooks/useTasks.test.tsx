@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider, type QueryClientConfig } from '@tanst
 import { tasksApi } from '../libs/apiClient';
 import { useTasks } from './useTasks';
 import type { TaskDto } from '../apis';
+import dayjs from 'dayjs';
 
 vi.mock('../libs/apiClient', () => ({
   tasksApi: {
@@ -39,7 +40,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   // --- クエリのテスト ---
   it('tasksQuery should fetch all tasks', async () => {
     // Given: tasksGetが返すダミーデータを準備
-    const mockTasks: TaskDto[] = [{ id: 1, title: 'Test Task', completed: false, dueDate: new Date().toISOString() }];
+    const mockTasks: TaskDto[] = [{ id: 1, title: 'Test Task', completed: false, dueDate: dayjs().toISOString() }];
     const mockResponse = {
       data: mockTasks,
       status: 200,
@@ -61,7 +62,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
   it('taskQuery should fetch a single task when taskId is provided', async () => {
     // Given
-    const mockTask: TaskDto = { id: 1, title: 'Single Task', completed: false, dueDate: new Date().toISOString() };
+    const mockTask: TaskDto = { id: 1, title: 'Single Task', completed: false, dueDate: dayjs().toISOString() };
     const mockResponse = {
       data: mockTask,
       status: 200,
@@ -84,8 +85,8 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   // --- ミューテーションのテスト ---
   it('createTaskMutation should call tasksPost and invalidate queries', async () => {
     // Given
-    const newTask = { title: 'New Task', dueDate: new Date() };
-    const createdTask: TaskDto = { id: 2, ...newTask, completed: false, dueDate: newTask.dueDate.toISOString() };
+    const newTask = { title: 'New Task', dueDate: dayjs().toISOString() };
+    const createdTask: TaskDto = { id: 2, ...newTask, completed: false, dueDate: newTask.dueDate };
     const mockResponse = {
       data: createdTask,
       status: 201, // POST成功時は 201 Created
@@ -106,15 +107,15 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     // Then
     expect(tasksApi.tasksPost).toHaveBeenCalledWith({
       ...newTask,
-      dueDate: newTask.dueDate.toISOString(),
+      dueDate: newTask.dueDate,
     });
     expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ['tasks'] });
   });
 
   it('updateTaskMutation should call tasksIdPut and invalidate queries', async () => {
     // Given
-    const taskUpdate = { title: 'Updated Task', dueDate: new Date() };
-    const updatedTask: TaskDto = { id: 1, ...taskUpdate, completed: false, dueDate: taskUpdate.dueDate.toISOString() };
+    const taskUpdate = { title: 'Updated Task', dueDate: dayjs().toISOString() };
+    const updatedTask: TaskDto = { id: 1, ...taskUpdate, completed: false, dueDate: taskUpdate.dueDate };
     const mockResponse = {
       data: updatedTask,
       status: 200, // PUT成功時は 200 OK
@@ -135,7 +136,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
     // Then
     expect(tasksApi.tasksIdPut).toHaveBeenCalledWith(1, {
       ...taskUpdate,
-      dueDate: taskUpdate.dueDate.toISOString(),
+      dueDate: taskUpdate.dueDate,
     });
     expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ['tasks'] });
     expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ['tasks', '1'] });

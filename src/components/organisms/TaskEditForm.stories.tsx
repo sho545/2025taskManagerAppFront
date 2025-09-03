@@ -4,6 +4,7 @@ import { TaskEditForm } from './TaskEditForm';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Box } from '@mui/material';
+import dayjs from 'dayjs';
 
 const meta = {
   title: 'Forms/TaskEditForm',
@@ -35,7 +36,7 @@ export const Default: Story = {
       title: '既存のタスクタイトル',
       description: 'これは編集画面の初期値です。',
       completed: false,
-      dueDate: new Date('2026-01-01T12:00:00'),
+      dueDate: dayjs('2026-01-01T12:00:00').toISOString(),
     },
     isSubmitting: false,
   },
