@@ -60,13 +60,18 @@ export const TaskCreateForm: React.FC<TaskFormProps> = ({
           <DateTimePicker
             label="期日"
             value={field.value ? dayjs(field.value) : null} // valueを接続
-            onChange={(newValue) => field.onChange(newValue ? newValue.toISOString() : '')} // onChangeを接続
+            onChange={(newValue) => 
+                { const dateValue = dayjs(newValue);
+                  field.onChange(dateValue.isValid() ? dateValue.toISOString() : '')
+                }
+              } // onChangeを接続
             // エラー表示のための設定
             slotProps={{
               textField: {
                 required: true,
                 error: !!error,
                 helperText: error?.message,
+
               },
             }}
           />

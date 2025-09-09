@@ -23,7 +23,7 @@ export const createTaskSchema = baseSchema.extend({
 });
 
 // 編集用のスキーマを生成する関数に変更
-export const createUpdateTaskSchema = (originalDueDate: string) => {
+export const updateTaskSchema = (originalDueDate: string) => {
   return baseSchema.extend({
     // 期限は元の期日以降である必要がある
     dueDate: z.string()
