@@ -60,7 +60,7 @@ export const EmptyTitleError: Story = {
     isSubmitting: false,
   },
   // play関数でテストを記述
-  play: async ({ canvasElement }) => {
+  play: async ({ args, canvasElement }) => {
     // 4. Arrange (準備): 操作対象の要素を取得
     const canvas = within(canvasElement);
     const submitButton = canvas.getByRole('button', { name: /登録する/i });
@@ -71,13 +71,17 @@ export const EmptyTitleError: Story = {
     // 6. Assert (検証): エラーメッセージが表示されたことを確認
     const errorMessage = await canvas.findByText('タイトルは必須です。');
     await expect(errorMessage).toBeInTheDocument();
+    await expect(args.onSubmit).not.toHaveBeenCalled();
   },
 };
 
 //タイトルが20文字超えでエラー
 export const TitleTooLongError: Story = {
-  ...Default,
-  play: async ({ canvasElement }) => {
+  args: {
+    onSubmit: fn(),
+    isSubmitting: false,
+  },
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const titleInput = canvas.getByLabelText(/タイトル/i);
     await userEvent.type(titleInput, 'a'.repeat(21));
@@ -85,34 +89,45 @@ export const TitleTooLongError: Story = {
     await userEvent.click(submitButton);
     const errorMessage = await canvas.findByText('タイトルは20文字以内で入力してください。');
     await expect(errorMessage).toBeInTheDocument();
+    await expect(args.onSubmit).not.toHaveBeenCalled();
   },
 };
 
 //説明に半角文字が入っている場合のエラー
 export const DescriptionHalfWidthError: Story = {
-  ...Default,
-  play: async ({ canvasElement }) => {
+  args: {
+    onSubmit: fn(),
+    isSubmitting: false,
+  },
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
+    await userEvent.type(screen.getByLabelText(/タイトル/i), '有効なタイトル');
     const descriptionInput = canvas.getByLabelText(/詳細/i);
     await userEvent.type(descriptionInput, 'half-width text');
     const submitButton = canvas.getByRole('button', { name: /登録する/i });
     await userEvent.click(submitButton);
     const errorMessage = await canvas.findByText('説明に半角英数字は使用できません。');
     await expect(errorMessage).toBeInTheDocument();
+    await expect(args.onSubmit).not.toHaveBeenCalled();
   },
 };
 
 //説明が50文字超えでエラー
 export const DescriptionTooLongError: Story = {
-  ...Default,
-  play: async ({ canvasElement }) => {
+  args: {
+    onSubmit: fn(),
+    isSubmitting: false,
+  },
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
+    await userEvent.type(screen.getByLabelText(/タイトル/i), '有効なタイトル');
     const descriptionInput = canvas.getByLabelText(/詳細/i);
     await userEvent.type(descriptionInput, 'あ'.repeat(51));
     const submitButton = canvas.getByRole('button', { name: /登録する/i });
     await userEvent.click(submitButton);
     const errorMessage = await canvas.findByText('説明は50文字以内で入力してください。');
     await expect(errorMessage).toBeInTheDocument();
+    await expect(args.onSubmit).not.toHaveBeenCalled();
   }
 };
 
