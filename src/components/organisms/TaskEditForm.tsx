@@ -5,7 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { ControlledTextField } from '../molecules/ControlledTextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { createUpdateTaskSchema, type TaskFormValues } from '../../types/task';
+import { updateTaskSchema, type TaskFormValues } from '../../types/task';
+import dayjs from 'dayjs';
 
 // 3. このコンポーネントが受け取るPropsの型を定義
 interface TaskFormProps {
@@ -23,9 +24,9 @@ export const TaskEditForm: React.FC<TaskFormProps> = ({
       title: initialValues?.title || '',
       description: initialValues?.description || '',
       completed: initialValues?.completed || false,
-      dueDate: initialValues?.dueDate || new Date(),
+      dueDate: initialValues?.dueDate || dayjs().toISOString(),
     }
-    const schema = createUpdateTaskSchema(initialValues?.dueDate || new Date());
+    const schema = updateTaskSchema(initialValues?.dueDate || dayjs().toISOString());
 
     // 4. useFormフックでフォームの状態とメソッドを取得
     const { control, handleSubmit } = useForm<TaskFormValues>({
@@ -59,11 +60,17 @@ export const TaskEditForm: React.FC<TaskFormProps> = ({
       <Controller
         name="dueDate"
         control={control}
-        render={({ field, fieldState: { error } }) => (
+        render={({ field, fieldState: { error } }) => {
+        
+          return(
           <DateTimePicker
             label="期日"
-            value={field.value || null} // valueを接続
-            onChange={(newValue) => field.onChange(newValue)} // onChangeを接続
+            value={field.value ? dayjs(field.value) : null} // valueを接続
+            onChange={(newValue) => 
+              { const dateValue = dayjs(newValue);
+                field.onChange(dateValue.isValid() ? dateValue.toISOString() : '')
+              }
+            } // onChangeを接続
             // エラー表示のための設定
             slotProps={{
               textField: {
@@ -72,8 +79,8 @@ export const TaskEditForm: React.FC<TaskFormProps> = ({
                 helperText: error?.message,
               },
             }}
-          />
-        )}
+          />)
+        }}
       />
       
         <Controller
@@ -100,3 +107,4 @@ export const TaskEditForm: React.FC<TaskFormProps> = ({
     </Box>
   );
 };
+

@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { TaskEditPageTemplate } from './TaskEditPageTemplate';
 import type { TaskFormValues } from '../../types/task';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const meta: Meta<typeof TaskEditPageTemplate> = {
   title: 'Templates/TaskSavePageTemplate',
@@ -10,7 +11,7 @@ const meta: Meta<typeof TaskEditPageTemplate> = {
   // DateTimePickerを動作させるためにdecoratorを追加
   decorators: [
     (Story) => (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Story />
       </LocalizationProvider>
     ),
@@ -29,7 +30,7 @@ const mockInitialValues: TaskFormValues = {
   title: '既存タスクのタイトル',
   description: 'これは編集用の初期値です。',
   completed: true,
-  dueDate: new Date(),
+  dueDate: dayjs().toISOString(),
 };
 
 // --- 各ストーリーの定義 ---

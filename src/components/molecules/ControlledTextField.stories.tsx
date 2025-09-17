@@ -5,6 +5,7 @@ import { Button, Box } from '@mui/material';
 
 import { ControlledTextField } from './ControlledTextField';
 import {  baseSchema, type TaskFormValues } from '../../types/task';
+import dayjs from 'dayjs';
 
 // // --- Storybook用のセットアップ ---
 
@@ -36,7 +37,7 @@ export const Default: Story = {
         title: '',
         description: '',
         completed: false,
-        dueDate: new Date(), // Dateオブジェクトで初期化
+        dueDate: dayjs().toISOString(), // dayjsオブジェクトで初期化
       },
     });
     return (

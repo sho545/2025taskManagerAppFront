@@ -20,7 +20,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task, onDelete }) => {
       </Box>
     );
   }
-  const formattedDueDate = task.dueDate ? format(new Date(task.dueDate), 'yyyy年MM月dd日 HH:mm') : '期日なし' ;
+  const formattedDueDate = task.dueDate ? format(task.dueDate, 'yyyy年MM月dd日 HH:mm') : '期日なし' ;
 
   return (
     

@@ -33,7 +33,7 @@ export const TaskIndexPage: React.FC = () => {
         title: targetTask.title || '',
         description: targetTask.description,
         completed: targetTask.completed,
-        dueDate: new Date(targetTask.dueDate!),
+        dueDate: targetTask.dueDate!,
         };
         updateTaskMutation.mutate({
             taskId: String(targetTask.id),
